@@ -6,6 +6,7 @@ const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
+const { resolve } = require('path');
 
 const questions = employeeQuestions => {
     return inquirer.prompt([
@@ -48,5 +49,11 @@ const questions = employeeQuestions => {
                 }
             }
         },
+        {
+            type: 'list',
+            name: 'role',
+            choices: ['Employee', 'Manager', 'Engineer', 'Intern'],
+            message: 'Please select your role'
+        }
     ])
 }
