@@ -1,12 +1,11 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const generateSite = require('./util/generateSite');
+const generateSite = require('./src/generateSite');
 
 const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
-const { resolve } = require('path');
 
 const questions = employeeQuestions => {
     return inquirer.prompt([
@@ -55,5 +54,57 @@ const questions = employeeQuestions => {
             choices: ['Employee', 'Manager', 'Engineer', 'Intern'],
             message: 'Please select your role'
         }
-    ])
+    ]).then(employeeData => {
+         switch (employeeData.role) {
+            case 'Employee':
+                return addEmployee(employeeData);
+            case 'Engineer':
+                return addEngineer(employeeData);
+            case 'Intern':
+                return addIntern(employeeData);
+            case 'Manager':
+                return addManager(employeeData);
+        }
+    }).then(pushObject => {
+        team.push(pushObject);
+        return inquirer.prompt(
+            {
+                type: 'confirm',
+                name: 'continue',
+                message: 'Continue adding?'
+            }
+        )
+    })
+};
+
+const engineerQuestions = function (employee) {
+    return inquirer.prompt(
+        {
+            type:
+        }
+    )
+}
+
+const managerQuestions = function (employee) {
+    return inquirer.prompt(
+        {
+            type: 'input',
+            name: 'officeNumber',
+            message: 'Please enter an office number'
+        }
+    ).then(prompt => {
+        return new Manager(employee.name, employee.id, employee,email, prompt.officeNumber);
+    })
+}
+
+const internQuestions = function (employee) {
+    return inquirer.prompt(
+        {
+            type: 'input',
+            name: 'school',
+            message: 'Please enter a school name'
+        }
+    ).then(prompt => {
+        return new Intern(employee.name, employee.id, employee.email, prompt.school);
+    })
 }
