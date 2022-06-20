@@ -36,4 +36,16 @@ const generateTeam = function(team) {
     return html;
 }
 
+const generateSpecificDetail = function(employee) {
+    if (employee.getRole() == 'Engineer') {
+        return html += `'<p>GitHub: ${employee.getGithub()}`
+    } else if (employee.getRole() == 'Intern') {
+        return html += `'<p>School: ${employee.getSchool()}`
+    } else if (employee.getRole() == 'Manager') {
+        return html += `'<p>Phone: ${employee.getOfficeNumber()}`
+    } else {
+        return '';
+    }
+}
+
 module.exports = generateSite;
