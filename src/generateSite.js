@@ -19,3 +19,21 @@ const generateSite = function(team) {
         </html>
     `;
 }
+
+const generateTeam = function(team) {
+    html = '';
+
+    team.forEach(employee => {
+        html += `
+        <h2>${employee.getName()}: ${employee.getRole()}</h2>
+        <div>
+            <p>Employee ID: ${employee.getID()}</p>
+            <p>Employee Email: <a href="mailto:${employee.getEmail()}">${employee.getEmail()}</a></p>
+            <p>${generateSpecificDetail(employee)}
+        </div>
+        `
+    })
+    return html;
+}
+
+module.exports = generateSite;

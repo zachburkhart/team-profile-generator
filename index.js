@@ -64,9 +64,7 @@ const questions = employeeQuestions => {
                 return InternSpecific(employeeData);
             case 'Manager':
                 return ManagerSpecific(employeeData);
-        }
-    }).then(returnTeam => {
-        return team;
+        } return team;
     })
 };
 
