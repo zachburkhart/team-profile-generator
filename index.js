@@ -7,7 +7,7 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 
-const questions = employeeQuestions => {
+const questions = team => {
     return inquirer.prompt([
         {
             type: 'input',
@@ -57,14 +57,29 @@ const questions = employeeQuestions => {
     ]).then(employeeData => {
          switch (employeeData.role) {
             case 'Employee':
-                return EmployeeSpecific(employeeData);
+                return employeeSpecific(employeeData);
             case 'Engineer':
-                return EngineerSpecific(employeeData);
+                return engineerSpecific(employeeData);
             case 'Intern':
-                return InternSpecific(employeeData);
+                return internSpecific(employeeData);
             case 'Manager':
-                return ManagerSpecific(employeeData);
-        } return team;
+                return managerSpecific(employeeData);
+        }
+    }).then(teamObject => {
+        team.push(teamObject);
+        return inquirer.prompt(
+            {
+                type: 'confirm',
+                name: 'confirm',
+                message: 'Add to team?'
+            }
+        ).then(response => {
+            if (response.confirm) {
+                return questions(team);
+            } else {
+                return team;
+            }
+        })
     })
 };
 
@@ -80,7 +95,7 @@ const engineerSpecific = function (employee) {
             message: 'Please enter a GitHub username'
         }
     ).then(prompt => {
-        return new Engineer(employee.name, employee.id, employee,email, prompt.github);
+        return new Engineer(employee.name, employee.id, employee.email, prompt.github);
     })
 };
 
@@ -92,7 +107,7 @@ const managerSpecific = function (employee) {
             message: 'Please enter an office number'
         }
     ).then(prompt => {
-        return new Manager(employee.name, employee.id, employee,email, prompt.officeNumber);
+        return new Manager(employee.name, employee.id, employee.email, prompt.officeNumber);
     })
 };
 

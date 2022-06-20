@@ -27,7 +27,7 @@ const generateTeam = function(team) {
         html += `
         <h2>${employee.getName()}: ${employee.getRole()}</h2>
         <div>
-            <p>Employee ID: ${employee.getID()}</p>
+            <p>Employee ID: ${employee.getId()}</p>
             <p>Employee Email: <a href="mailto:${employee.getEmail()}">${employee.getEmail()}</a></p>
             <p>${generateSpecificDetail(employee)}
         </div>
@@ -38,11 +38,11 @@ const generateTeam = function(team) {
 
 const generateSpecificDetail = function(employee) {
     if (employee.getRole() == 'Engineer') {
-        return html += `'<p>GitHub: ${employee.getGithub()}`
+        return html += `<p>GitHub: ${employee.getGithub()}`
     } else if (employee.getRole() == 'Intern') {
-        return html += `'<p>School: ${employee.getSchool()}`
+        return html += `<p>School: ${employee.getSchool()}`
     } else if (employee.getRole() == 'Manager') {
-        return html += `'<p>Phone: ${employee.getOfficeNumber()}`
+        return html += `<p>Phone: ${employee.getOfficeNumber()}`
     } else {
         return '';
     }
