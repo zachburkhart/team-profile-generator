@@ -57,35 +57,36 @@ const questions = employeeQuestions => {
     ]).then(employeeData => {
          switch (employeeData.role) {
             case 'Employee':
-                return addEmployee(employeeData);
+                return EmployeeSpecific(employeeData);
             case 'Engineer':
-                return addEngineer(employeeData);
+                return EngineerSpecific(employeeData);
             case 'Intern':
-                return addIntern(employeeData);
+                return InternSpecific(employeeData);
             case 'Manager':
-                return addManager(employeeData);
+                return ManagerSpecific(employeeData);
         }
-    }).then(pushObject => {
-        team.push(pushObject);
-        return inquirer.prompt(
-            {
-                type: 'confirm',
-                name: 'continue',
-                message: 'Continue adding?'
-            }
-        )
+    }).then(returnTeam => {
+        return team;
     })
 };
 
-const engineerQuestions = function (employee) {
+const employeeSpecific = function (employee) {
+    return new Employee(employee.name, employee.id, employee.email)
+};
+
+const engineerSpecific = function (employee) {
     return inquirer.prompt(
         {
-            type:
+            type: 'input',
+            name: 'github',
+            message: 'Please enter a GitHub username'
         }
-    )
-}
+    ).then(prompt => {
+        return new Engineer(employee.name, employee.id, employee,email, prompt.github);
+    })
+};
 
-const managerQuestions = function (employee) {
+const managerSpecific = function (employee) {
     return inquirer.prompt(
         {
             type: 'input',
@@ -95,9 +96,9 @@ const managerQuestions = function (employee) {
     ).then(prompt => {
         return new Manager(employee.name, employee.id, employee,email, prompt.officeNumber);
     })
-}
+};
 
-const internQuestions = function (employee) {
+const internSpecific = function (employee) {
     return inquirer.prompt(
         {
             type: 'input',
@@ -107,4 +108,23 @@ const internQuestions = function (employee) {
     ).then(prompt => {
         return new Intern(employee.name, employee.id, employee.email, prompt.school);
     })
-}
+};
+
+const writeFile = data => {
+    fs.writeFile('./dist/index.html', data, err => {
+        if (err) {
+            console.log(error);
+            return;
+        } else {
+            console.log("Success! Navigate to dist directory");
+        }
+    })
+};
+
+questions([])
+.then(team => {
+    return generateSite(team);
+})
+.then(siteHTML => {
+    return writeFile(siteHTML);
+})
